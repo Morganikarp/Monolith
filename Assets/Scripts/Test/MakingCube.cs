@@ -6,6 +6,7 @@ using UnityEngine.Rendering;
 
 class MakingCube : MathsBase
 {
+    public Material mat;
     void Start()
     {
         GameObject Object = new GameObject();
@@ -17,7 +18,9 @@ class MakingCube : MathsBase
         MF.mesh.Clear();
         MF.mesh.vertices = Vect3.ConvertToUnity(shape.vertices);
         MF.mesh.triangles = shape.tris;
+        MF.mesh.RecalculateNormals();
         MF.mesh.normals = Vect3.FindNormals(shape.vertices);
+        MR.material = mat;
 
     }
 }
