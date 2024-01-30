@@ -74,15 +74,32 @@ public class MathsBase : MonoBehaviour
         public static Vect3 ArrayMidpoint(Vect3[] VecArray) // Midpoint of array of Vector3's
         {
             float xPos = 0; float yPos = 0; float zPos = 0;
-            for (int i = 0; i < VecArray.Length; i++) { xPos = VecArray[i].x; yPos = VecArray[i].y; zPos = VecArray[i].z; }
-            return new Vect3(xPos, yPos, zPos);
+            for (int i = 0; i < VecArray.Length; i++) { xPos += VecArray[i].x; yPos += VecArray[i].y; zPos += VecArray[i].z; }
+            return new Vect3(xPos / VecArray.Length, yPos / VecArray.Length, zPos / VecArray.Length);
         }
 
-        public static Vect3[] FindNormals(Vect3[] VecArray, Vect3 Midpont)
+        public static Vector3[] FindNormals(Vect3[] VecArray)
         {
-            Vect3[] result = new Vect3[VecArray.Length];
-            for (int i = 0; i < VecArray.Length; i++)
+            Vector3[] result = new Vector3[VecArray.Length];
+            //Vect3[] vectCollect = new Vect3[4];
+            //int VectsCheck = 0;
+            //int normalCount = 0;
+            for (int i = 0; i < VecArray.Length / 3; i++)
             {
+                result[i] = Vect3.ConvertToUnity(VecArray[i]) - new Vector3(.5f, .5f, .5f);
+                //if (VectsCheck == 3)
+                //{
+                //    result[normalCount] = Vect3.ConvertToUnity(VecArray) - new Vector3(.5f, .5f, .5f);
+                //    vectCollect = new Vect3[4];
+                //    normalCount++;
+                //    VectsCheck = 0;
+                //}
+                //else
+                //{
+                //    vectCollect[VectsCheck] = VecArray[i];
+                //    VectsCheck++;
+                //}
+
                 //VecArray[i] = Midpoint of face - Midpoint (of object)
             }
             return result;

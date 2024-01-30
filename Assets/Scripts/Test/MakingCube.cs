@@ -17,7 +17,7 @@ class MakingCube : MathsBase
         MF.mesh.Clear();
         MF.mesh.vertices = Vect3.ConvertToUnity(shape.vertices);
         MF.mesh.triangles = shape.tris;
-        MF.mesh.RecalculateNormals();
+        MF.mesh.normals = Vect3.FindNormals(shape.vertices);
 
     }
 }
