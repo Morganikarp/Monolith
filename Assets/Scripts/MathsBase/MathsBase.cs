@@ -71,6 +71,33 @@ public class MathsBase : MonoBehaviour
         public static Vect3 DuoMidpoint(Vect3 Vec1, Vect3 Vec2)
         { return new Vect3((Vec1.x + Vec2.x) / 2, (Vec1.x + Vec2.x) / 2, (Vec1.z + Vec2.z) / 2); } // Midpoint of two Vector3's
 
+        public static Vect3 ArrayMidpoint(Vect3[] VecArray) // Midpoint of array of Vector3's
+        {
+            float xPos = 0; float yPos = 0; float zPos = 0;
+            for (int i = 0; i < VecArray.Length; i++) { xPos = VecArray[i].x; yPos = VecArray[i].y; zPos = VecArray[i].z; }
+            return new Vect3(xPos, yPos, zPos);
+        }
+
+        public static Vect3[] FindNormals(Vect3[] VecArray, Vect3 Midpont)
+        {
+            Vect3[] result = new Vect3[VecArray.Length];
+            for (int i = 0; i < VecArray.Length; i++)
+            {
+                //VecArray[i] = Midpoint of face - Midpoint (of object)
+            }
+            return result;
+        }
+
+        public static Vector3[] ConvertToUnity(Vect3[] Vect) // Convert array of Vect3's to Unity Vector3's
+        {
+            Vector3[] result = new Vector3[Vect.Length];
+            for (int i = 0; i < Vect.Length; i++)
+            {
+                result[i] = new Vector3(Vect[i].x, Vect[i].y, Vect[i].z);
+            }
+            return result;
+        }
+
         // Setting Operators
         public static Vect3 operator +(Vect3 Vec1, Vect3 Vec2)
         { return Add(Vec1, Vec2); }
@@ -113,16 +140,6 @@ public class MathsBase : MonoBehaviour
                     tris = AssociatedTris;
                     break;
             }
-        }
-
-        public static Vector3[] ConvertToUnity(Vect3[] Vect)
-        {
-            Vector3[] result = new Vector3[Vect.Length];
-            for (int i = 0; i < Vect.Length; i++)
-            {
-                result[i] = new Vector3(Vect[i].x, Vect[i].y, Vect[i].z);
-            }
-            return result;
         }
     }
 }

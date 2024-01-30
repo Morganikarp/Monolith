@@ -15,7 +15,7 @@ class MakingCube : MathsBase
         Shape3D shape = new Shape3D("Cube", null, null);
 
         MF.mesh.Clear();
-        MF.mesh.vertices = Shape3D.ConvertToUnity(shape.vertices);
+        MF.mesh.vertices = Vect3.ConvertToUnity(shape.vertices);
         MF.mesh.triangles = shape.tris;
         MF.mesh.RecalculateNormals();
 
