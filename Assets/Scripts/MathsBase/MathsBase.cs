@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
+
 public class MathsBase : MonoBehaviour
 {
     public class Vect2
@@ -128,49 +130,83 @@ public class MathsBase : MonoBehaviour
 
     public class Shape3D
     {
-        public string shape; public Vect3[] vertices; public int[] tris;
-        public Shape3D(string Preset, Vect3[] ObjVertices, int[] AssociatedTris)
+        public string shape; public Vect3[] vertices; public int[] tris; public Vect3 midpoint;
+        public Shape3D(Vect3 Position, Vect3 Rotation, Vect3 Scale, string Preset, Vect3[] ObjVertices, int[] AssociatedTris)
         {
+            // Set the origin position, then make the vertices around it
             switch (Preset)
             {
                 case "Cube":
-                    vertices = new Vect3[] {
-                        new Vect3(1, 0, 1), new Vect3(1, 1, 1), new Vect3(0, 1, 1), new Vect3(0, 0, 1),
-                        new Vect3(1, 0, 0), new Vect3(1, 0, 1), new Vect3(0, 0, 1), new Vect3(0, 0, 0),
-                        new Vect3(0, 0, 0), new Vect3(0, 0, 1), new Vect3(0, 1, 1), new Vect3(0, 1, 0),
-                        new Vect3(0, 1, 0), new Vect3(0, 1, 1), new Vect3(1, 1, 1), new Vect3(1, 1, 0),
-                        new Vect3(1, 1, 0), new Vect3(1, 1, 1), new Vect3(1, 0, 1), new Vect3(1, 0, 0),
-                        new Vect3(0, 0, 0), new Vect3(0, 1, 0), new Vect3(1, 1, 0), new Vect3(1, 0, 0)
-                        };
-                    tris = new int[] {
-                        0, 1, 2, 0, 2, 3,
-                        4, 5, 6, 4, 6, 7,
-                        8, 9, 10, 8, 10, 11,
-                        12, 13, 14, 12, 14, 15,
-                        16, 17, 18, 16, 18, 19,
-                        20, 21, 22, 20, 22, 23
-                    };
+                    Vect3 localPos = new Vect3(Scale.x / 2, Scale.y / 2, Scale.z / 2);
 
                     //vertices = new Vect3[] {
                     //    new Vect3(0, 0, 0), new Vect3(0, 0, 1), new Vect3(0, 1, 1), new Vect3(0, 1, 0),
                     //    new Vect3(1, 0, 0), new Vect3(1, 0, 1), new Vect3(1, 1, 1), new Vect3(1, 1, 0),
                     //    };
-                    //tris = new int[] {
-                    //    5, 6, 2, 5, 2, 1,
-                    //    4, 5, 1, 4, 1, 0,
-                    //    0, 1, 2, 0, 2, 3,
-                    //    3, 2, 4, 3, 4, 7,
-                    //    7, 6, 5, 7, 5, 4,
-                    //    0, 3, 6, 0, 6, 4
+
+                    vertices = new Vect3[] {
+                        new Vect3(0, 0, 0), new Vect3(0, 0, 1), new Vect3(0, 1, 1), new Vect3(0, 1, 0),
+                        new Vect3(1, 0, 0), new Vect3(1, 0, 1), new Vect3(1, 1, 1), new Vect3(1, 1, 0),
+                        };
+
+                    //vertices = new Vect3[] {
+                    //    new Vect3(-0.5f, -0.5f, -0.5f), new Vect3(-0.5f, -0.5f, 0.5f), new Vect3(-0.5f, 0.5f, 0.5f), new Vect3(-0.5f, 0.5f, -0.5f),
+                    //    new Vect3(0.5f, -0.5f, -0.5f), new Vect3(0.5f, -0.5f, 0.5f), new Vect3(0.5f, 0.5f, 0.5f), new Vect3(0.5f, 0.5f, -0.5f),
                     //    };
 
+                    tris = new int[] {
+                        5, 6, 2, 5, 2, 1,
+                        4, 5, 1, 4, 1, 0,
+                        0, 1, 2, 0, 2, 3,
+                        3, 2, 6, 3, 6, 7,
+                        7, 6, 5, 7, 5, 4,
+                        0, 3, 7, 0, 7, 4
+                        };
                     break;
-
                 default:
                     vertices = ObjVertices;
                     tris = AssociatedTris;
                     break;
             }
+
+            SetPosition(Position);
+            SetRotation(Rotation);
+            SetScale(Scale);
+            FindMidpoint();
+        }
+
+        public void SetPosition(Vect3 Pos)
+        {
+            foreach (Vect3 v in vertices)
+            {
+                v.x += Pos.x; v.y += Pos.y; v.z += Pos.z;
+            }
+        }
+
+        public void SetRotation(Vect3 Rot)
+        {
+            foreach (Vect3 v in vertices)
+            {
+                v.x += Rot.x; v.y += Rot.y; v.z += Rot.z;
+            }
+        }
+
+        public void SetScale(Vect3 Scl)
+        {
+            foreach (Vect3 v in vertices)
+            {
+                v.x *= Scl.x; v.y *= Scl.y; v.z *= Scl.z;
+            }
+        }
+
+        public Vect3 FindMidpoint()
+        {
+            Vect3 collectingVect = new Vect3(0, 0, 0);
+            foreach (Vect3 v in vertices)
+            {
+                collectingVect += v;
+            }
+            return new Vect3(collectingVect.x / vertices.Length, collectingVect.y / vertices.Length, collectingVect.z / vertices.Length);
         }
     }
 }
