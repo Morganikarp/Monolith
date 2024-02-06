@@ -56,7 +56,7 @@ public class MathsBase : MonoBehaviour
         { return new Vector3(Vect.x, Vect.y, Vect.z);}
 
         public static float Mag(Vect3 Vect) // Vector3 Magnitude
-        {return MathF.Sqrt(MathF.Pow(Vect.x, 2) + MathF.Pow(Vect.y, 2) + MathF.Pow(Vect.z, 2));}
+        {return MathF.Sqrt(Vect.x * Vect.x + Vect.y * Vect.y + Vect.z * Vect.z);}
 
         public static Vect3 Add(Vect3 Vec1, Vect3 Vec2) // Vector3 Addition
         {return new Vect3(Vec1.x + Vec2.x, Vec1.y + Vec2.y, Vec1.z + Vec2.z);}
@@ -70,6 +70,12 @@ public class MathsBase : MonoBehaviour
         public static Vect3 Div(Vect3 Vec1, Vect3 Vec2) // Vector3 Division
         {return new Vect3(Vec1.x / Vec2.x, Vec1.y / Vec2.y, Vec1.z / Vec2.z);}
 
+        public static Vect3 ApplyScalar(Vect3 Vec1, float Scl) //Application of scalar to Vector3
+        {return new Vect3(Vec1.x * Scl, Vec1.y * Scl, Vec1.z * Scl);}
+
+        public static Vect3 ApplyDivisor(Vect3 Vec1, float Scl) //Application of divisor to Vector3
+        { return new Vect3(Vec1.x / Scl, Vec1.y / Scl, Vec1.z / Scl); }
+
         public static Vect3 DuoMidpoint(Vect3 Vec1, Vect3 Vec2)
         { return new Vect3((Vec1.x + Vec2.x) / 2, (Vec1.x + Vec2.x) / 2, (Vec1.z + Vec2.z) / 2); } // Midpoint of two Vector3's
 
@@ -79,6 +85,9 @@ public class MathsBase : MonoBehaviour
             for (int i = 0; i < VecArray.Length; i++) { xPos += VecArray[i].x; yPos += VecArray[i].y; zPos += VecArray[i].z; }
             return new Vect3(xPos / VecArray.Length, yPos / VecArray.Length, zPos / VecArray.Length);
         }
+
+        public static Vect3 Normalize(Vect3 Vec1) // Normalize Vect3
+        { return ApplyDivisor(Vec1, Mag(Vec1)); }
 
         public static Vector3[] FindNormals(Vect3[] VecArray)
         {
@@ -124,8 +133,12 @@ public class MathsBase : MonoBehaviour
         { return Sub(Vec1, Vec2); }
         public static Vect3 operator *(Vect3 Vec1, Vect3 Vec2)
         { return Mult(Vec1, Vec2); }
+        public static Vect3 operator *(Vect3 Vec1, float Scl)
+        { return ApplyScalar(Vec1, Scl); }
         public static Vect3 operator /(Vect3 Vec1, Vect3 Vec2)
         {return Div(Vec1, Vec2);}
+        public static Vect3 operator /(Vect3 Vec1, float Scl)
+        {return ApplyDivisor(Vec1, Scl); }
     }
 
     public class Shape3D
@@ -139,20 +152,10 @@ public class MathsBase : MonoBehaviour
                 case "Cube":
                     Vect3 localPos = new Vect3(Scale.x / 2, Scale.y / 2, Scale.z / 2);
 
-                    //vertices = new Vect3[] {
-                    //    new Vect3(0, 0, 0), new Vect3(0, 0, 1), new Vect3(0, 1, 1), new Vect3(0, 1, 0),
-                    //    new Vect3(1, 0, 0), new Vect3(1, 0, 1), new Vect3(1, 1, 1), new Vect3(1, 1, 0),
-                    //    };
-
                     vertices = new Vect3[] {
                         new Vect3(0, 0, 0), new Vect3(0, 0, 1), new Vect3(0, 1, 1), new Vect3(0, 1, 0),
                         new Vect3(1, 0, 0), new Vect3(1, 0, 1), new Vect3(1, 1, 1), new Vect3(1, 1, 0),
                         };
-
-                    //vertices = new Vect3[] {
-                    //    new Vect3(-0.5f, -0.5f, -0.5f), new Vect3(-0.5f, -0.5f, 0.5f), new Vect3(-0.5f, 0.5f, 0.5f), new Vect3(-0.5f, 0.5f, -0.5f),
-                    //    new Vect3(0.5f, -0.5f, -0.5f), new Vect3(0.5f, -0.5f, 0.5f), new Vect3(0.5f, 0.5f, 0.5f), new Vect3(0.5f, 0.5f, -0.5f),
-                    //    };
 
                     tris = new int[] {
                         5, 6, 2, 5, 2, 1,
