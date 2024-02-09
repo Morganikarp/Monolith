@@ -2,8 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.PackageManager;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class MathsBase : MonoBehaviour
 {
@@ -30,8 +30,31 @@ public class MathsBase : MonoBehaviour
         public static Vect2 Div(Vect2 Vec1, Vect2 Vec2) // Vector2 Division
         {return new Vect2(Vec1.x / Vec2.x, Vec1.y / Vec2.y);}
 
+        public static Vect2 ApplyScalar(Vect2 Vec1, float Scl) //Application of scalar to Vector3
+        { return new Vect2(Vec1.x * Scl, Vec1.y * Scl); }
+
+        public static Vect2 ApplyDivisor(Vect2 Vec1, float Scl) //Application of divisor to Vector3
+        { return new Vect2(Vec1.x / Scl, Vec1.y / Scl); }
+
         public static Vect2 DuoMidpoint(Vect2 Vec1, Vect2 Vec2)
         {return new Vect2((Vec1.x + Vec2.x) / 2, (Vec1.x + Vec2.x) / 2);} // Midpoint of two Vector2's
+
+        public static Vect2 Normalize(Vect2 Vec1) // Normalize Vect3
+        { return ApplyDivisor(Vec1, Mag(Vec1)); }
+
+        public static float DotProduct(Vect2 Vec1, Vect2 Vec2, bool Normalised)
+        {
+            Vect2 v1 = Vec1;
+            Vect2 v2 = Vec2;
+
+            if (!Normalised)
+            {
+                v1 = Normalize(Vec1);
+                v2 = Normalize(Vec2);
+            }
+
+            return (v1.x * v2.x) + (v1.y * v2.y);
+        }
 
         // Setting Operators
         public static Vect2 operator +(Vect2 Vec1, Vect2 Vec2)
@@ -55,6 +78,16 @@ public class MathsBase : MonoBehaviour
         public static Vector3 ConvertToUnity(Vect3 Vect) // Convert custom Vect3 to Vector3
         { return new Vector3(Vect.x, Vect.y, Vect.z);}
 
+        public static Vector3[] ConvertToUnityArray(Vect3[] Vect) // Convert array of custom Vect3 to Vector3 array
+        {
+            Vector3[] result = new Vector3[Vect.Length];
+            for (int i = 0; i < Vect.Length; i++)
+            {
+                result[i] = new Vector3(Vect[i].x, Vect[i].y, Vect[i].z);
+            }
+            return result;
+        }
+
         public static float Mag(Vect3 Vect) // Vector3 Magnitude
         {return MathF.Sqrt(Vect.x * Vect.x + Vect.y * Vect.y + Vect.z * Vect.z);}
 
@@ -77,7 +110,7 @@ public class MathsBase : MonoBehaviour
         { return new Vect3(Vec1.x / Scl, Vec1.y / Scl, Vec1.z / Scl); }
 
         public static Vect3 DuoMidpoint(Vect3 Vec1, Vect3 Vec2)
-        { return new Vect3((Vec1.x + Vec2.x) / 2, (Vec1.x + Vec2.x) / 2, (Vec1.z + Vec2.z) / 2); } // Midpoint of two Vector3's
+        { return new Vect3((Vec1.x + Vec2.x) / 2, (Vec1.y + Vec2.y) / 2, (Vec1.z + Vec2.z) / 2); } // Midpoint of two Vector3's
 
         public static Vect3 ArrayMidpoint(Vect3[] VecArray) // Midpoint of array of Vector3's
         {
@@ -116,14 +149,18 @@ public class MathsBase : MonoBehaviour
             return result;
         }
 
-        public static Vector3[] ConvertToUnity(Vect3[] Vect) // Convert array of Vect3's to Unity Vector3's
+        public static float DotProduct(Vect3 Vec1, Vect3 Vec2, bool Normalised)
         {
-            Vector3[] result = new Vector3[Vect.Length];
-            for (int i = 0; i < Vect.Length; i++)
+            Vect3 v1 = Vec1;
+            Vect3 v2 = Vec2;
+
+            if (!Normalised)
             {
-                result[i] = new Vector3(Vect[i].x, Vect[i].y, Vect[i].z);
+                v1 = Normalize(Vec1);
+                v2 = Normalize(Vec2);
             }
-            return result;
+
+            return (v1.x * v2.x) + (v1.y * v2.y) + (v1.z * v2.z);
         }
 
         // Setting Operators

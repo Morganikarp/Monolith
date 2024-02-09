@@ -9,10 +9,9 @@ public class Workshop1 : MathsBase
     public GameObject target;
     Vect3 targetPos;
 
-
     void Update()
     {
-        Vect3 targetPos = new Vect3(target.transform.position.x - transform.position.x, target.transform.position.y - transform.position.y, target.transform.position.z - transform.position.z);
+        targetPos = new Vect3(target.transform.position.x - transform.position.x, target.transform.position.y - transform.position.y, target.transform.position.z - transform.position.z);
         if (Input.GetKeyDown(KeyCode.Space))
         {
             transform.position += Vect3.ConvertToUnity(targetPos);
