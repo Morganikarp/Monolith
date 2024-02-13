@@ -11,35 +11,41 @@ public class MathsBase : MonoBehaviour
     {
         // Type definition
         public float x; public float y;
-        public Vect2(float xVal, float yVal) // Define Vector2
+        public Vect2(float xVal, float yVal) // Define Vect2
         {x = xVal;y = yVal;}
 
         //Functions
-        public static float Mag(Vect2 Vect)  // Vector2 Magnitude
-        {return MathF.Sqrt(MathF.Pow(Vect.x, 2) + MathF.Pow(Vect.y, 2));}
+        public static float Mag(Vect2 Vect)  // Vect2 Magnitude
+        {return Vect.x * Vect.x + Vect.y * Vect.y;}
 
-        public static Vect2 Add(Vect2 Vec1, Vect2 Vec2) // Vector2 Addition
+        public static float ToRadian(Vect2 Vect) // Convert a Vect2 to a radian angle
+        {return MathF.Atan(Vect.y / Vect.x) / (180 / MathF.PI);}
+
+        public static Vect2 ToDirVect(float angle) // Convert a radian angle to a unit-length Vect2
+        {return new Vect2(MathF.Cos(angle), MathF.Sin(angle));}
+
+        public static Vect2 Add(Vect2 Vec1, Vect2 Vec2) // Vect2 Addition
         {return new Vect2(Vec1.x - Vec2.x, Vec1.y - Vec2.y);}
 
-        public static Vect2 Sub(Vect2 Vec1, Vect2 Vec2) // Vector2 Subtraction
+        public static Vect2 Sub(Vect2 Vec1, Vect2 Vec2) // Vect2 Subtraction
         {return new Vect2(Vec1.x - Vec2.x, Vec1.y - Vec2.y);}
 
-        public static Vect2 Mult(Vect2 Vec1, Vect2 Vec2) // Vector2 Multiplication
+        public static Vect2 Mult(Vect2 Vec1, Vect2 Vec2) // Vect2 Multiplication
         {return new Vect2(Vec1.x * Vec2.x, Vec1.y * Vec2.y);}
 
-        public static Vect2 Div(Vect2 Vec1, Vect2 Vec2) // Vector2 Division
+        public static Vect2 Div(Vect2 Vec1, Vect2 Vec2) // Vect2 Division
         {return new Vect2(Vec1.x / Vec2.x, Vec1.y / Vec2.y);}
 
-        public static Vect2 ApplyScalar(Vect2 Vec1, float Scl) //Application of scalar to Vector3
+        public static Vect2 ApplyScalar(Vect2 Vec1, float Scl) //Application of scalar to Vect2
         { return new Vect2(Vec1.x * Scl, Vec1.y * Scl); }
 
-        public static Vect2 ApplyDivisor(Vect2 Vec1, float Scl) //Application of divisor to Vector3
+        public static Vect2 ApplyDivisor(Vect2 Vec1, float Scl) //Application of divisor to Vect2
         { return new Vect2(Vec1.x / Scl, Vec1.y / Scl); }
 
         public static Vect2 DuoMidpoint(Vect2 Vec1, Vect2 Vec2)
-        {return new Vect2((Vec1.x + Vec2.x) / 2, (Vec1.x + Vec2.x) / 2);} // Midpoint of two Vector2's
+        {return new Vect2((Vec1.x + Vec2.x) / 2, (Vec1.x + Vec2.x) / 2);} // Midpoint of two Vect2's
 
-        public static Vect2 Normalize(Vect2 Vec1) // Normalize Vect3
+        public static Vect2 Normalize(Vect2 Vec1) // Normalize Vect2
         { return ApplyDivisor(Vec1, Mag(Vec1)); }
 
         public static float DotProduct(Vect2 Vec1, Vect2 Vec2, bool Normalised)
@@ -71,7 +77,7 @@ public class MathsBase : MonoBehaviour
     {
         // Type definition
         public float x; public float y; public float z;
-        public Vect3(float xVal, float yVal, float zVal) // Define Vector3
+        public Vect3(float xVal, float yVal, float zVal) // Define Vect3
         {x = xVal;y = yVal;z = zVal;}
 
         // Functions
@@ -88,31 +94,46 @@ public class MathsBase : MonoBehaviour
             return result;
         }
 
-        public static float Mag(Vect3 Vect) // Vector3 Magnitude
+        public static float Mag(Vect3 Vect) // Vect3 Magnitude
         {return MathF.Sqrt(Vect.x * Vect.x + Vect.y * Vect.y + Vect.z * Vect.z);}
 
-        public static Vect3 Add(Vect3 Vec1, Vect3 Vec2) // Vector3 Addition
+        public static float ToRadian(Vect3 Vect) // Convert a Vect3 to a radian angle
+        { return MathF.Atan(Vect.y / Vect.x / Vect.z) / (180 / MathF.PI); }
+
+        public static Vect3 EulerAnglesToDirVect(Vect3 Vect) //
+        {
+            Vect3 result = new(0,0,0);
+            Vect3 adjustedVect = Vect3.ApplyDivisor(Vect, (180 / MathF.PI));
+
+            result.x = MathF.Cos(adjustedVect.y) * MathF.Cos(adjustedVect.x);
+            result.y = MathF.Sin(adjustedVect.x);
+            result.z = MathF.Cos(adjustedVect.x) * Mathf.Sin(adjustedVect.y);
+
+            return result;
+        }
+
+        public static Vect3 Add(Vect3 Vec1, Vect3 Vec2) // Vect3 Addition
         {return new Vect3(Vec1.x + Vec2.x, Vec1.y + Vec2.y, Vec1.z + Vec2.z);}
 
-        public static Vect3 Sub(Vect3 Vec1, Vect3 Vec2) // Vector3 Subtraction
+        public static Vect3 Sub(Vect3 Vec1, Vect3 Vec2) // Vect3 Subtraction
         {return new Vect3(Vec1.x - Vec2.x, Vec1.y - Vec2.y, Vec1.z - Vec2.z);}
 
-        public static Vect3 Mult(Vect3 Vec1, Vect3 Vec2) // Vector3 Multiplication
+        public static Vect3 Mult(Vect3 Vec1, Vect3 Vec2) // Vect3 Multiplication
         {return new Vect3(Vec1.x * Vec2.x, Vec1.y * Vec2.y, Vec1.z * Vec2.z);}
 
-        public static Vect3 Div(Vect3 Vec1, Vect3 Vec2) // Vector3 Division
+        public static Vect3 Div(Vect3 Vec1, Vect3 Vec2) // Vect3 Division
         {return new Vect3(Vec1.x / Vec2.x, Vec1.y / Vec2.y, Vec1.z / Vec2.z);}
 
-        public static Vect3 ApplyScalar(Vect3 Vec1, float Scl) //Application of scalar to Vector3
+        public static Vect3 ApplyScalar(Vect3 Vec1, float Scl) //Application of scalar to Vect3
         {return new Vect3(Vec1.x * Scl, Vec1.y * Scl, Vec1.z * Scl);}
 
-        public static Vect3 ApplyDivisor(Vect3 Vec1, float Scl) //Application of divisor to Vector3
+        public static Vect3 ApplyDivisor(Vect3 Vec1, float Scl) //Application of divisor to Vect3
         { return new Vect3(Vec1.x / Scl, Vec1.y / Scl, Vec1.z / Scl); }
 
         public static Vect3 DuoMidpoint(Vect3 Vec1, Vect3 Vec2)
-        { return new Vect3((Vec1.x + Vec2.x) / 2, (Vec1.y + Vec2.y) / 2, (Vec1.z + Vec2.z) / 2); } // Midpoint of two Vector3's
+        { return new Vect3((Vec1.x + Vec2.x) / 2, (Vec1.y + Vec2.y) / 2, (Vec1.z + Vec2.z) / 2); } // Midpoint of two Vect3's
 
-        public static Vect3 ArrayMidpoint(Vect3[] VecArray) // Midpoint of array of Vector3's
+        public static Vect3 ArrayMidpoint(Vect3[] VecArray) // Midpoint of array of Vect3's
         {
             float xPos = 0; float yPos = 0; float zPos = 0;
             for (int i = 0; i < VecArray.Length; i++) { xPos += VecArray[i].x; yPos += VecArray[i].y; zPos += VecArray[i].z; }
@@ -161,6 +182,17 @@ public class MathsBase : MonoBehaviour
             }
 
             return (v1.x * v2.x) + (v1.y * v2.y) + (v1.z * v2.z);
+        }
+
+        public static Vect3 CrossProduct(Vect3 Vec1,  Vect3 Vec2)
+        {
+            Vect3 result = new(0, 0, 0);
+
+            result.x = Vec1.y * Vec2.z - Vec1.z * Vec2.y;
+            result.y = Vec1.z * Vec2.x - Vec1.x * Vec2.z;
+            result.z = Vec1.x * Vec2.y - Vec1.y * Vec2.x;
+
+            return result;
         }
 
         // Setting Operators
