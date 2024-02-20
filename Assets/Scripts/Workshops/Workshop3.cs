@@ -15,22 +15,22 @@ public class Workshop3 : MathsBase
 
         if (Input.GetKey(KeyCode.W))
         {
-            transform.position += Vect3.ConvertToUnity(forwardDirection) * Spd * Time.deltaTime;
+            transform.position += Vect3.Vect3ToUnity(forwardDirection) * Spd * Time.deltaTime;
         }
 
         if (Input.GetKey(KeyCode.S))
         {
-            transform.position -= Vect3.ConvertToUnity(forwardDirection) * Spd * Time.deltaTime;
+            transform.position -= Vect3.Vect3ToUnity(forwardDirection) * Spd * Time.deltaTime;
         }
 
         if (Input.GetKey(KeyCode.D))
         {
-            transform.position += Vect3.ConvertToUnity(Vect3.CrossProduct(new(0,1,0), forwardDirection)) * Spd * Time.deltaTime;
+            transform.position += Vect3.Vect3ToUnity(Vect3.CrossProduct(new(0,1,0), forwardDirection)) * Spd * Time.deltaTime;
         }
 
         if (Input.GetKey(KeyCode.A))
         {
-            transform.position -= Vect3.ConvertToUnity(Vect3.CrossProduct(new(0, 1, 0), forwardDirection)) * Spd * Time.deltaTime;
+            transform.position -= Vect3.Vect3ToUnity(Vect3.CrossProduct(new(0, 1, 0), forwardDirection)) * Spd * Time.deltaTime;
         }
 
         if (Input.GetKey(KeyCode.Q))
