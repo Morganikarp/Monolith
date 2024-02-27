@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor.PackageManager;
 using UnityEngine;
-using static MathsBase;
 
 public class MathsBase : MonoBehaviour
 {
@@ -15,7 +14,7 @@ public class MathsBase : MonoBehaviour
         public Vect2(float xVal, float yVal) // Define Vect2
         {x = xVal;y = yVal;}
 
-        Vect2 Zero = new Vect2(0, 0);
+        public static Vect2 Zero = new Vect2(0, 0);
 
         //Functions
         public static Vector2 Vect2ToUnity(Vect2 Vect) // Convert custom Vect2 to Vector2
@@ -93,7 +92,7 @@ public class MathsBase : MonoBehaviour
         public Vect3(float xVal, float yVal, float zVal) // Define Vect3
         {x = xVal;y = yVal;z = zVal;}
 
-        Vect3 Zero = new Vect3(0, 0, 0);
+        public static Vect3 Zero = new Vect3(0, 0, 0);
 
         // Functions
         public static Vector3 Vect3ToUnity(Vect3 Vect) // Convert custom Vect3 to Vector3
@@ -213,7 +212,7 @@ public class MathsBase : MonoBehaviour
         }
         public static Vect3 Lerp(Vect3 CurrentPos, Vect3 DesiredPos, float stepVal)
         {
-            return Vect3.ApplyScalar(CurrentPos, (1 - stepVal)) + Vect3.ApplyScalar(CurrentPos, stepVal);
+            return Vect3.ApplyScalar(CurrentPos, (1 - stepVal)) + Vect3.ApplyScalar(DesiredPos, stepVal);
         }
 
         // Setting Operators
@@ -356,13 +355,15 @@ public class MathsBase : MonoBehaviour
             values[3, 3] = 1;
         }
 
+        public static Matrix4x4 Zero = new Matrix4x4(Vect4.Zero, Vect4.Zero, Vect4.Zero, Vect4.Zero);
+
         public static Matrix4x4 Mult(Matrix4x4 mat1, Matrix4x4 mat2)
         {
-            Matrix4x4 result = new Matrix4x4(Vect4.Zero, Vect4.Zero, Vect4.Zero, Vect4.Zero);
+            Matrix4x4 result = Matrix4x4.Zero;
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 4; i++) // for each row
             {
-                for (int j = 0; j < 4; j++)
+                for (int j = 0; j < 4; j++) // for each column
                 {
                     result.values[j, i] = mat1.values[j, 0] * mat2.values[0, i] +
                         mat1.values[j, 1] * mat2.values[1, i] +
@@ -374,23 +375,68 @@ public class MathsBase : MonoBehaviour
             return result;
         }
 
-        public static Matrix4x4 Mult(Matrix4x4 mat, Vect4 vec)
+        public static Vect4 Mult(Matrix4x4 mat, Vect4 vec)
         {
-            Matrix4x4 result = new Matrix4x4(Vect4.Zero, Vect4.Zero, Vect4.Zero, Vect4.Zero);
+            Vect4 result = Vect4.Zero;
 
-            for (int i = 0; i < 4; i++)
-            {
-                for (int j = 0; j < 4; j++)
-                {
-                    result.values[j, i] = mat1.values[j, 0] * mat2.values[0, i] +
-                        mat1.values[j, 1] * mat2.values[1, i] +
-                        mat1.values[j, 2] * mat2.values[2, i] +
-                        mat1.values[j, 3] * mat2.values[3, i];
-                }
-            }
+            result.w = mat.values[0, 0] * vec.w +
+                       mat.values[0, 1] * vec.w +
+                       mat.values[0, 2] * vec.w +
+                       mat.values[0, 3] * vec.w;
+
+            result.x = mat.values[1, 0] * vec.x +
+                       mat.values[1, 1] * vec.x +
+                       mat.values[1, 2] * vec.x +
+                       mat.values[1, 3] * vec.x;
+
+            result.y = mat.values[2, 0] * vec.y +
+                       mat.values[2, 1] * vec.y +
+                       mat.values[2, 2] * vec.y +
+                       mat.values[2, 3] * vec.y;
+
+            result.z = mat.values[3, 0] * vec.z +
+                       mat.values[3, 1] * vec.z +
+                       mat.values[3, 2] * vec.z +
+                       mat.values[3, 3] * vec.z;
 
             return result;
         }
+
+        public static Matrix4x4 RollMat(float angle)
+        {
+            Matrix4x4 result = new(new Vect3(MathF.Cos(angle), MathF.Sin(angle), 0), 
+                                   new(-MathF.Sin(angle), MathF.Cos(angle), 0),
+                                   new(0, 0, 1),
+                                   new(0, 0, 0));
+
+            return result;
+        }
+
+        public static Matrix4x4 PitchMat(float angle)
+        {
+            Matrix4x4 result = new(new Vect3(1, 0, 0),
+                                   new(0, MathF.Cos(angle), MathF.Sin(angle)),
+                                   new(0, -MathF.Sin(angle), MathF.Cos(angle)),
+                                   new(0, 0, 0));
+
+            return result;
+        }
+
+        public static Matrix4x4 YawMat(float angle)
+        {
+            Matrix4x4 result = new(new Vect3(MathF.Cos(angle), 0, -MathF.Sin(angle)),
+                                   new(0, 1, 0),
+                                   new(MathF.Sin(angle), 0, MathF.Cos(angle)),
+                                   new(0, 0, 0));
+
+            return result;
+        }
+
+        public static Vector3[] RotateVectices(Vector3[] vertices, float angle)
+        {
+            return null;
+        }
+
     }
 
     public class Shape3D

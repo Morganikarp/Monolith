@@ -14,7 +14,7 @@ public class Workshop1 : MathsBase
         targetPos = new Vect3(target.transform.position.x - transform.position.x, target.transform.position.y - transform.position.y, target.transform.position.z - transform.position.z);
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            transform.position += Vect3.ConvertToUnity(targetPos);
+            transform.position += Vect3.Vect3ToUnity(targetPos);
         }
     }
 }
