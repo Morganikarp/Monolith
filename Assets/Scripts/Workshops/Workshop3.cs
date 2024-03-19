@@ -33,14 +33,15 @@ public class Workshop3 : MathsBase
             transform.position -= Vect3.Vect3ToUnity(Vect3.CrossProduct(new(0, 1, 0), forwardDirection)) * Spd * Time.deltaTime;
         }
 
-        if (Input.GetKey(KeyCode.Q))
-        {
-            transform.eulerAngles -= new Vector3(0f, 30f * Time.deltaTime / (180 / MathF.PI), 0f);
-        }
-
         if (Input.GetKey(KeyCode.E))
         {
-            transform.eulerAngles += new Vector3(0f, (300f * Time.deltaTime) / (180 / MathF.PI), 0f);
+            transform.eulerAngles += new Vector3(0f, (3f * Time.deltaTime) * (180 / MathF.PI), 0f);
         }
+
+        if (Input.GetKey(KeyCode.Q))
+        {
+            transform.eulerAngles -= new Vector3(0f, (3f * Time.deltaTime) * (180 / MathF.PI), 0f);
+        }
+
     }
 }

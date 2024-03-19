@@ -20,7 +20,7 @@ class MakingCube : MathsBase
         shape = new Shape3D(new Vect3(0,0,0), new Vect3(0, 0, 0), new Vect3(1, 1, 1), "Cube", null, null);
 
         MF.mesh.Clear();
-        MF.mesh.vertices = Vect3.ConvertToUnityArray(shape.vertices);
+        MF.mesh.vertices = Vect3.Vect3ToUnityArray(shape.vertices);
         MF.mesh.triangles = shape.tris;
         MF.mesh.RecalculateNormals();
         MF.mesh.normals = Vect3.FindNormals(shape.vertices);
@@ -33,13 +33,13 @@ class MakingCube : MathsBase
         if (Input.GetKeyDown(KeyCode.Space))
         {
             shape.SetPosition(new Vect3(0,5,0));
-            MF.mesh.vertices = Vect3.ConvertToUnityArray(shape.vertices);
+            MF.mesh.vertices = Vect3.Vect3ToUnityArray(shape.vertices);
         }
 
         if (Input.GetKeyDown(KeyCode.K))
         {
             shape.SetScale(new Vect3(2,2,2));
-            MF.mesh.vertices = Vect3.ConvertToUnityArray(shape.vertices);
+            MF.mesh.vertices = Vect3.Vect3ToUnityArray(shape.vertices);
         }
 
         if (Input.GetKeyDown(KeyCode.L))

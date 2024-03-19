@@ -7,12 +7,6 @@ public class Workshop4 : MathsBase
 
     Vect3 targetPos = new(5,0,0);
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     // Update is called once per frame
     void Update()
     {
