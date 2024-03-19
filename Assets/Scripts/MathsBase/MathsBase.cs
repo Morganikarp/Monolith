@@ -284,6 +284,21 @@ public class MathsBase : MonoBehaviour
 
         public static Matrix3x3 Zero = new Matrix3x3(Vect3.Zero, Vect3.Zero, Vect3.Zero);
 
+        public static float GrandSum(Matrix3x3 mat)
+        {
+            float result = 0f;
+
+            for (int i = 0; i < 3; i++) // for each row
+            {
+                for (int j = 0; j < 3; j++) // for each column
+                {
+                    result += mat.values[j, i];
+                }
+            }
+
+            return result;
+        }
+
         public static Matrix3x3 Mult(Matrix3x3 mat1, Matrix3x3 mat2)
         {
             Matrix3x3 result = Zero;
@@ -481,6 +496,21 @@ public class MathsBase : MonoBehaviour
 
         public static Matrix4x4 Zero = new Matrix4x4(Vect4.Zero, Vect4.Zero, Vect4.Zero, Vect4.Zero);
         public static Matrix4x4 RotMat = new Matrix4x4(new Vect3(1,0,0), new(0,1,0), new(0,0,1), Vect3.Zero);
+
+        public static float GrandSum(Matrix4x4 mat)
+        {
+            float result = 0f;
+
+            for (int i = 0; i < 4; i++) // for each row
+            {
+                for (int j = 0; j < 4; j++) // for each column
+                {
+                    result += mat.values[j, i];
+                }
+            }
+
+            return result;
+        }
 
         public static Matrix4x4 Mult(Matrix4x4 mat1, Matrix4x4 mat2)
         {
