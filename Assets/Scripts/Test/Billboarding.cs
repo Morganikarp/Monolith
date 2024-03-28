@@ -26,11 +26,23 @@ public class Billboarding : MathsBase
     // Update is called once per frame
     void Update()
     {
+
         Vect3 Forward = Vect3.Normalize(Vect3.UnityToVect3(transform.position - Target.transform.position));
         Vect3 Right = Vect3.Normalize(Vect3.CrossProduct(Vect3.Up, Forward));
         Vect3 Up = Vect3.Normalize(Vect3.CrossProduct(Forward, Right));
 
         RUFmat = new(Right, Up, Forward);
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            //Debug.Log("1: " + ModelSpaceVertices[0].x + "   " + ModelSpaceVertices[0].y + "   " + ModelSpaceVertices[0].z);
+            //Debug.Log("2: " + ModelSpaceVertices[1].x + "   " + ModelSpaceVertices[1].y + "   " + ModelSpaceVertices[1].z);
+            //Debug.Log("3: " + ModelSpaceVertices[2].x + "   " + ModelSpaceVertices[2].y + "   " + ModelSpaceVertices[3].z);
+            //Debug.Log("4: " + ModelSpaceVertices[3].x + "   " + ModelSpaceVertices[3].y + "   " + ModelSpaceVertices[3].z);
+            
+            Debug.Log("Forward: " + Forward.x + "   " + Forward.y + "   " + Forward.z);
+            Debug.Log("Right: " + Right.x + "   " + Right.y + "   " + Right.z);
+            Debug.Log("Up: " + Up.x + "   " + Up.y + "   " + Up.z);
+        }
 
         if (Matrix3x3.GrandSum(RUFmat) != Matrix3x3.GrandSum(oldRUFmat))
         {
