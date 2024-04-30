@@ -51,7 +51,8 @@ public class Billboarding : MathsBase
                 AdjustedVerts[i] = Vect3.Vect3ToUnity(Matrix3x3.Mult(RUFmat, ModelSpaceVertices[i]));
             }
 
-            MF.mesh.vertices = AdjustedVerts;
+            //MF.mesh.vertices = AdjustedVerts;
+            MF.mesh.SetVertices(AdjustedVerts);
             MF.mesh.RecalculateNormals();
             MF.mesh.RecalculateBounds();
 

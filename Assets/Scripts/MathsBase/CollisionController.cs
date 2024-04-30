@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CollisionController : MonoBehaviour
+public class CollisionController : MathsBase
 {
     public List<GameObject> pObjectList = new List<GameObject>();
     public float radius;
@@ -11,10 +11,10 @@ public class CollisionController : MonoBehaviour
     public bool Live;
 
     public bool Impulse;
-    public Vector3 ImpulseForce;
-    public Vector3 Acceleration;
-    public Vector3 Velocity;
-    public Vector3 Momentum;
+    public Vect3 ImpulseForce;
+    public Vect3 Acceleration;
+    public Vect3 Velocity;
+    public Vect3 Momentum;
     public float Mass;
     public float Density;
 
@@ -31,10 +31,10 @@ public class CollisionController : MonoBehaviour
         Live = false;
 
         Impulse = false;
-        ImpulseForce = Vector3.zero;
-        Acceleration = Vector3.zero;
-        Velocity = Vector3.zero;
-        Momentum = Vector3.zero;
+        ImpulseForce = Vect3.Zero;
+        Acceleration = Vect3.Zero;
+        Velocity = Vect3.Zero;
+        Momentum = Vect3.Zero;
         Mass = 3f;
 
         timeOverlapsed = 0;
@@ -44,6 +44,11 @@ public class CollisionController : MonoBehaviour
 
     void Update()
     {
+
+        if (Input.GetKeyDown(KeyCode.Space) && transform.name == "Ball1")
+        {
+            Velocity = new Vect3(1.5f, 0f, 0f);
+        }
             //Force = new Vector3(0f, -9.81f * Mass, 0f);
 
             //if (Impulse)
@@ -69,8 +74,8 @@ public class CollisionController : MonoBehaviour
         if (Impulse)
         {
             Impulse = false;
-    
-            Vector3 ImpAcc = ImpulseForce / Mass;
+
+            Vect3 ImpAcc = ImpulseForce / Mass;
             Velocity += ImpAcc / Time.deltaTime;
         }
 
@@ -78,7 +83,7 @@ public class CollisionController : MonoBehaviour
         if (EnableGravity)
         {
             // Gravity
-            Acceleration = new Vector3(0f, -9.81f, 0f);
+            Acceleration = new Vect3(0f, -9.81f, 0f);
         
             // terminal velocity equation:
             // V = sqrRt( 2 * Weight / Drag Co * density * frontal area )
@@ -97,7 +102,7 @@ public class CollisionController : MonoBehaviour
 
         Velocity += Acceleration * Time.deltaTime;
 
-        transform.position += Velocity * Time.deltaTime;
+        transform.position += Vect3.Vect3ToUnity(   Velocity * Time.deltaTime   );
 
         pObjectList.AddRange(GameObject.FindGameObjectsWithTag("PhysicsObject"));
 
@@ -109,14 +114,14 @@ public class CollisionController : MonoBehaviour
                 {
                     if (OriginalCollision)
                     {
-                        Vector3 collisionNormal = Vector3.Normalize(obj.transform.position - transform.position);
+                        Vect3 collisionNormal = Vect3.Normalize(    Vect3.Sub(    Vect3.UnityToVect3(   obj.transform.position   ), Vect3.UnityToVect3(    transform.position  )   )   ) ;
 
                         CollisionController objCollision = obj.GetComponent<CollisionController>();;
 
-                        Momentum = Mass * Velocity;
-                        objCollision.Momentum = objCollision.Mass * objCollision.Velocity;
+                        Momentum = Vect3.ApplyScalar(  Velocity, Mass  );
+                        objCollision.Momentum = Vect3.ApplyScalar(  objCollision.Velocity, objCollision.Mass   );
 
-                        Vector3 resultantMomentum = Momentum + objCollision.Momentum;
+                        Vect3 resultantMomentum = Vect3.Add(    Momentum, objCollision.Momentum    );
 
                         // this intial velocity + this final velocity = obj initial velocity + obj final velocity
 
@@ -154,11 +159,17 @@ public class CollisionController : MonoBehaviour
                         //Vector3 objFinalV = Velocity + thisFinalV - objCollision.Velocity;
                         //Debug.Log(Velocity + " + " + thisFinalV + " - " + objCollision.Velocity + " = " + thisFinalV);
 
-                        Vector3 thisFinalV = Velocity * ((Mass - objCollision.Mass) / (Mass + objCollision.Mass)) + objCollision.Velocity * ((2 * objCollision.Mass) / (Mass + objCollision.Mass));;
-                        Vector3 objFinalV = Velocity * ((2 * Mass) / (Mass + objCollision.Mass)) + objCollision.Velocity * ((objCollision.Mass - Mass) / (Mass + objCollision.Mass));
+                        Vect3 thisFinalV = Velocity * ((Mass - objCollision.Mass) / (Mass + objCollision.Mass)) + objCollision.Velocity * ((2 * objCollision.Mass) / (Mass + objCollision.Mass));;
+                        Vect3 objFinalV = Velocity * ((2 * Mass) / (Mass + objCollision.Mass)) + objCollision.Velocity * ((objCollision.Mass - Mass) / (Mass + objCollision.Mass));
 
-                        Velocity = thisFinalV;
-                        objCollision.Velocity = objFinalV;
+                        //Velocity = thisFinalV;
+
+                        objCollision.Velocity = Vect3.ApplyScalar(collisionNormal, Vect3.Mag(objFinalV));
+                        Velocity = Vect3.ApplyScalar(Vect3.CrossProduct(collisionNormal, Vect3.Up), Vect3.Mag(thisFinalV));
+
+                        
+                        
+                        //objCollision.Velocity = objFinalV.magnitude * collisionNormal;
 
                         //Vector3 a = (resultantMomentum / Mass) / Time.deltaTime;
                         ////Vector3 f = a / Time.deltaTime;
