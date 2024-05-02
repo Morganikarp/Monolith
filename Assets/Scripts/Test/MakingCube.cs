@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UIElements;
 
-class MakingCube : MathsBase
+class MakingCube : MonoBehaviour
 {
     public Material mat;
     Shape3D shape;

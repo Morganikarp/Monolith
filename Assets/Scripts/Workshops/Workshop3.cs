@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Workshop3 : MathsBase
+public class Workshop3 : MonoBehaviour
 {
     float Spd = 5;
 
@@ -11,7 +11,7 @@ public class Workshop3 : MathsBase
     void Update()
     {
         Vect3 eulAng = new Vect3(transform.eulerAngles.x, transform.eulerAngles.y, transform.eulerAngles.z);
-        Vect3 forwardDirection = Vect3.EulerAnglesToDirVect(eulAng);
+        Vect3 forwardDirection = Vect3.EulerAnglesToDirVect(eulAng, true);
 
         if (Input.GetKey(KeyCode.W))
         {

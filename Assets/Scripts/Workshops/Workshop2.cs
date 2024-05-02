@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Workshop2 : MathsBase
+public class Workshop2 : MonoBehaviour
 {
     //Workshop 2
     public GameObject target;

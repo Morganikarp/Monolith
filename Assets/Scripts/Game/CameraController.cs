@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class CameraController : MathsBase
+public class CameraController : MonoBehaviour
 {
 
     float posAngle;

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Billboarding : MathsBase
+public class Billboarding : MonoBehaviour
 {
     public GameObject Target;
     MeshFilter MF;

@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static MathsBase;
 
-public class Workshop1 : MathsBase
+public class Workshop1 : MonoBehaviour
 {
     //Workshop 1
     public GameObject target;

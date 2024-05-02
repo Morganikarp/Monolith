@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CollisionController : MathsBase
+public class CollisionController : MonoBehaviour
 {
     public List<GameObject> pObjectList = new List<GameObject>();
     public float radius;
@@ -40,6 +40,7 @@ public class CollisionController : MathsBase
         timeOverlapsed = 0;
 
         OriginalCollision = true;
+
     }
 
     void Update()
@@ -47,6 +48,7 @@ public class CollisionController : MathsBase
 
         if (Input.GetKeyDown(KeyCode.Space) && transform.name == "Ball1")
         {
+            Mass *= 2;
             Velocity = new Vect3(1.5f, 0f, 0f);
         }
             //Force = new Vector3(0f, -9.81f * Mass, 0f);
@@ -165,9 +167,21 @@ public class CollisionController : MathsBase
                         //Velocity = thisFinalV;
 
                         objCollision.Velocity = Vect3.ApplyScalar(collisionNormal, Vect3.Mag(objFinalV));
-                        Velocity = Vect3.ApplyScalar(Vect3.CrossProduct(collisionNormal, Vect3.Up), Vect3.Mag(thisFinalV));
 
-                        
+                        //Vect3 collisionUP = Vect3.CrossProduct(Vect3.CrossProduct(collisionNormal, new(1f, 1f, 1f)), collisionNormal   );
+
+                        //Vect3 normalDegree = Vect3.ToDegree(collisionNormal);
+
+                        //Vect3 collisionUP = Vect3.UnityToVect3(Quaternion.AngleAxis(90, Vect3.Vect3ToUnity(collisionNormal)).eulerAngles);
+
+                        Vect3 collisionUP = Vect3.RotateVertextAroundAxis(90f, new(1f, 0f, 0f), collisionNormal);
+
+
+                        Velocity = Vect3.ApplyScalar(Vect3.CrossProduct(collisionNormal, collisionUP), Vect3.Mag(thisFinalV));
+
+                        Debug.Log(Vect3.Vect3ToUnity(Vect3.CrossProduct(collisionNormal, collisionUP)) + "    " + Vect3.Vect3ToUnity(collisionNormal) + "    " + Vect3.Vect3ToUnity(collisionUP) + "    ");
+
+                        //Debug.Break();
                         
                         //objCollision.Velocity = objFinalV.magnitude * collisionNormal;
 

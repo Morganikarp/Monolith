@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Workshop4 : MathsBase
+public class Workshop4 : MonoBehaviour
 {
 
     Vect3 targetPos = new(5,0,0);
