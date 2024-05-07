@@ -45,7 +45,6 @@ public class CollisionController : MonoBehaviour
 
     void Update()
     {
-
         if (Input.GetKeyDown(KeyCode.Space) && transform.name == "Ball1")
         {
             Mass *= 2;
@@ -174,12 +173,41 @@ public class CollisionController : MonoBehaviour
 
                         //Vect3 collisionUP = Vect3.UnityToVect3(Quaternion.AngleAxis(90, Vect3.Vect3ToUnity(collisionNormal)).eulerAngles);
 
-                        Vect3 collisionUP = Vect3.RotateVertextAroundAxis(90f, new(1f, 0f, 0f), collisionNormal);
+                        //Vect3 collisionPITCH = Vect3.Zero;
+                        //Vect3 collisionYAW = Vect3.Zero;
+                        //Vect3 collisionROLL = Vect3.Zero;
+
+                        //if (Velocity.x != 0)
+                        //{
+                        //    collisionPITCH = Vect3.RotateVertextAroundAxis(90f, new(0f, 0f, 1f), collisionNormal);
+                        //    Debug.Log("1");
+                        //}
+
+                        //if (Velocity.y != 0)
+                        //{
+                        //    collisionYAW = Vect3.RotateVertextAroundAxis(90f, new(0f, 1f, 0f), collisionNormal);
+                        //    Debug.Log("2");
+                        //}
+
+                        //if (Velocity.z != 0)
+                        //{
+                        //    collisionROLL = Vect3.RotateVertextAroundAxis(90f, new(0f, 0f, 1f), collisionNormal);
+                        //    Debug.Log("3");
+                        //}
+
+                        //Vect3 collisionPITCH = Vect3.RotateVertextAroundAxis(90f, new(0f, 0f, 1f), collisionNormal);
+                        //Vect3 collisionYAW = Vect3.RotateVertextAroundAxis(90f, new(0f, 1f, 0f), collisionNormal);
+                        //Vect3 collisionROLL = Vect3.RotateVertextAroundAxis(90f, new(1f, 0f, 0f), collisionNormal);
+
+                        //Vect3 collisionPerpen = collisionPITCH + collisionYAW + collisionROLL;
+
+                        //Vect3 Right = Vect3.Normalize(Vect3.CrossProduct(Vect3.Up, collisionNormal));
+                        //Vect3 Up = Vect3.Normalize(Vect3.CrossProduct(collisionNormal, Right));
 
 
-                        Velocity = Vect3.ApplyScalar(Vect3.CrossProduct(collisionNormal, collisionUP), Vect3.Mag(thisFinalV));
+                        Velocity = Vect3.ApplyScalar(Vect3.CrossProduct(collisionNormal, Vect3.Up), Vect3.Mag(thisFinalV));
 
-                        Debug.Log(Vect3.Vect3ToUnity(Vect3.CrossProduct(collisionNormal, collisionUP)) + "    " + Vect3.Vect3ToUnity(collisionNormal) + "    " + Vect3.Vect3ToUnity(collisionUP) + "    ");
+                        //Debug.Log(Vect3.Vect3ToUnity(Vect3.CrossProduct(collisionNormal, collisionPerpen)) + "    " + Vect3.Vect3ToUnity(collisionNormal) + "    " + Vect3.Vect3ToUnity(collisionPerpen) + "    ");
 
                         //Debug.Break();
                         
@@ -362,5 +390,55 @@ public class CollisionController : MonoBehaviour
         CombRadSq *= CombRadSq;
 
         return distMagVect <= CombRadSq;
+    }
+
+    void ConstantDeceleration()
+    {
+
+
+        if (Velocity.x > 0)
+        {
+            Velocity.x -= 0.005f;
+        }
+
+        else if (Velocity.x < 0)
+        {
+            Velocity.x += 0.005f;
+        }
+
+        if (Velocity.x >= -0.01f && Velocity.x <= 0.01f)
+        {
+            Velocity.x = 0f;
+        }
+
+        if (Velocity.x > 0)
+        {
+            Velocity.x -= 0.005f;
+        }
+
+        else if (Velocity.x < 0)
+        {
+            Velocity.x += 0.005f;
+        }
+
+        if (Velocity.x >= -0.01f && Velocity.x <= 0.01f)
+        {
+            Velocity.x = 0f;
+        }
+
+        if (Velocity.x > 0)
+        {
+            Velocity.x -= 0.005f;
+        }
+
+        else if (Velocity.x < 0)
+        {
+            Velocity.x += 0.005f;
+        }
+
+        if (Velocity.x >= -0.01f && Velocity.x <= 0.01f)
+        {
+            Velocity.x = 0f;
+        }
     }
 }
